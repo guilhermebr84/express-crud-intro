@@ -77,41 +77,40 @@ app.get("/book/title/:title", (req, res) => {
 });
 
 app.get("/book/author/:author", (req, res) => {
-    // console.log(req.body);
-    const foundBookAuthor = database.filter((bookObj) => {
-      return bookObj.author.includes(req.params.author);
-    });
-    console.log(foundBookAuthor);
-    if (foundBookAuthor) {
-      return res.status(200).json(foundBookAuthor);
-    }
-  
-    return res.status(404).json({ msg: "book title not found" });
+  // console.log(req.body);
+  const foundBookAuthor = database.filter((bookObj) => {
+    return bookObj.author.includes(req.params.author);
   });
+  console.log(foundBookAuthor);
+  if (foundBookAuthor) {
+    return res.status(200).json(foundBookAuthor);
+  }
 
+  return res.status(404).json({ msg: "book title not found" });
+});
 
 app.patch("/book/:id", (req, res) => {
-    const foundBookIndex = database.findIndex((bookObj) => {
-        return bookObj._id === req.params.id;
-      });
-    if (foundBookIndex > -1) {
-        const update = {...database[foundBookIndex], ...req.body}
-        database[foundBookIndex] = update
-        return res.status(200).json(update);
-    }
-    return res.status(404).json({ msg: "impossible to update"})
+  const foundBookIndex = database.findIndex((bookObj) => {
+    return bookObj._id === req.params.id;
+  });
+  if (foundBookIndex > -1) {
+    const update = { ...database[foundBookIndex], ...req.body };
+    database[foundBookIndex] = update;
+    return res.status(200).json(update);
+  }
+  return res.status(404).json({ msg: "impossible to update" });
 });
 
 app.delete("/book/:id", (req, res) => {
-    const foundBookIndex = database.findIndex((bookObj) => {
-        return bookObj._id === req.params.id;
-      });
-    if (foundBookIndex > -1) {
-        database.splice(foundBookIndex, 1);
-        return res.status(200).json({ msg: "delete ok" });
-        // sempre que fizer o delete, o objeto retorna vazio
-    }
-    return res.status(404).json({ msg: "impossible to delete"})
+  const foundBookIndex = database.findIndex((bookObj) => {
+    return bookObj._id === req.params.id;
+  });
+  if (foundBookIndex > -1) {
+    database.splice(foundBookIndex, 1);
+    return res.status(200).json({ msg: "delete ok" });
+    // sempre que fizer o delete, o objeto retorna vazio
+  }
+  return res.status(404).json({ msg: "impossible to delete" });
 });
 
 app.listen(4000, () => console.log("server running on 4000 port"));
